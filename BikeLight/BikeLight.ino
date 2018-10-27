@@ -93,8 +93,8 @@ void loop() {
     if(leftFlag == 1 && rightFlag == 0 && stopFlag == 0)
     {
         //left turn, full
-        leftConfig(LED_F, red);
-        strip.show();
+        leftConfig(LED_F, red, rearStrip);
+        rearStrip.show();
         timerCheck(timerStart);
         delay(TURN_DELAY);
     }
@@ -187,7 +187,7 @@ void timerCheck(unsigned long t)
     }
 }
 
-void idleConfig(int ledArray[], uint32_t color)
+void idleConfig(int ledArray[], uint32_t color, Adafruit_NeoPixel &strip)
 {
     // idle state
     // passes in an array with 2 values, beginning and end of LED strip to config
@@ -224,7 +224,7 @@ void idleConfig(int ledArray[], uint32_t color)
 }
 
 
-void rightConfig(int ledArray[], uint32_t color)
+void rightConfig(int ledArray[], uint32_t color, Adafruit_NeoPixel &strip)
 {
     // right turn state
     if(ledArray[0]+turnCount == ledArray[1])
@@ -249,7 +249,7 @@ void rightConfig(int ledArray[], uint32_t color)
     turnCount += turnSlope;
 }
 
-void leftConfig(int ledArray[], uint32_t color)
+void leftConfig(int ledArray[], uint32_t color, Adafruit_NeoPixel &strip)
 {
     // left turn state
     if(ledArray[0]+turnCount == ledArray[1])
@@ -274,7 +274,7 @@ void leftConfig(int ledArray[], uint32_t color)
     turnCount += turnSlope;
 }
 
-void stopConfig(int ledArray[], uint32_t color)
+void stopConfig(int ledArray[], uint32_t color, Adafruit_NeoPixel &strip)
 {
     // stop state, sets all pixels to full red (255)
     for(int i = ledArray[0]; i <= ledArray[1]; i++) 
