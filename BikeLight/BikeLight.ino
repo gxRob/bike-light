@@ -5,7 +5,8 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define PIN 5           // pixel data pin
+#define FRONT 5           // front pixel data pin
+#define REAR 6          // rear pixel data pin
 #define PIXEL 16        // number of pixels
 #define LEFT_BUTTON 2
 #define RIGHT_BUTTON 3
@@ -25,7 +26,8 @@
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel frontStrip = Adafruit_NeoPixel(PIXEL, FRONT, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel rearStrip = Adafruit_NeoPixel(PIXEL, REAR, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
