@@ -45,9 +45,9 @@ const int LED_L[] = {0,7};
 const int LED_R[] = {8,15};
 const int LED_F[] = {0,15};
 
-const uint32_t red = strip.Color(255,0,0);
-const uint32_t halfRed = strip.Color(127,0,0);
-const uint32_t white = strip.Color(127,127,127);
+const uint32_t red = rearStrip.Color(255,0,0);
+const uint32_t halfRed = rearStrip.Color(127,0,0);
+const uint32_t white = rearStrip.Color(127,127,127);
 
 int idleCount = 0;
 int idleSlope = 1;
@@ -56,8 +56,10 @@ int turnSlope = 1;
 
 void setup() {
     // put your setup code here, to run once:
-    strip.begin();
-    strip.show(); // Initialize all pixels to 'off'
+    frontStrip.begin();
+    frontStrip.show(); // Initialize all pixels to 'off'
+    rearStrip.begin();
+    rearStrip.show();
     //Serial.begin(9600);
     
     pinMode(LEFT_BUTTON, INPUT_PULLUP);
@@ -97,50 +99,60 @@ void loop() {
         //left turn, full
         leftConfig(LED_F, red, rearStrip);
         rearStrip.show();
+        leftConfig(LED_F, red, frontStrip);
+        frontStrip.show();
         timerCheck(timerStart);
         delay(TURN_DELAY);
     }
     else if(leftFlag == 0 && rightFlag == 1 && stopFlag == 0)
     {
         //right turn, full
-        rightConfig(LED_F, red);
-        strip.show();
+        rightConfig(LED_F, red, rearStrip);
+        rearStrip.show();
+        rightConfig(LED_F, red, frontStrip);
+        frontStrip.show();
         timerCheck(timerStart);
         delay(TURN_DELAY);
     }
     else if(leftFlag == 0 && rightFlag == 0 && stopFlag == 1)
     {
         //stop, full
-        stopConfig(LED_F, red);
-        strip.show();
+        stopConfig(LED_F, red, rearStrip);
+        rearStrip.show();
     }
     else if(leftFlag == 1 && rightFlag == 0 && stopFlag == 1)
     {
         //stop and left
-        leftConfig(LED_L, red);
-        stopConfig(LED_R, red);
-        strip.show();
+        leftConfig(LED_L, red, rearStrip);
+        stopConfig(LED_R, red, rearStrip);
+        leftConfig(LED_L, red, frontStrip);
+        idleConfig(LED_R, white, frontStrip);
+        rearStrip.show();
+        frontStrip.show();
         timerCheck(timerStart);
         delay(TURN_DELAY);
     }
     else if(leftFlag == 0 && rightFlag == 1 && stopFlag == 1)
     {
         //stop and right
-        rightConfig(LED_R, red);
-        stopConfig(LED_L, red);
-        strip.show();
+        rightConfig(LED_R, red, rearStrip);
+        stopConfig(LED_L, red, rearStrip);
+        rightConfig(LED_R, red, frontStrip);
+        idleConfig(LED_L, white, frontStrip);
+        rearStrip.show();
+        frontStrip.show();
         timerCheck(timerStart);
         delay(TURN_DELAY);
     }
     else
     {
         //State: Idle
-        idleConfig(LED_F, red);
-        strip.show();
+        idleConfig(LED_F, red, rearStrip);
+        idleConfig(LED_F, white, frontStrip);
+        rearStrip.show();
+        frontStrip.show();
         delay(IDLE_DELAY);        // need a delay or else it's too fast.. 50ms is approx correct.
     }
-
-
 }
 
 void leftFlagISR()
